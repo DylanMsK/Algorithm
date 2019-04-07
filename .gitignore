@@ -1,5 +1,8 @@
-# Sample input & output data
-*.txt
-
 # Mac auto generated
 .DS_Store
+
+# VScode  auto generated
+.vscode
+
+# Sample input & output data
+*.txt
