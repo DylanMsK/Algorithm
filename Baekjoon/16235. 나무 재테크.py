@@ -43,7 +43,6 @@ def winter():
         for y in range(N):
             bab[y][x] += s2d2[y][x]
 
-
 N, M, K = map(int, input().split())
 s2d2 = [list(map(int, input().split())) for _ in range(N)]
 tree_init = [tuple(map(int, input().split())) for _ in range(M)]
@@ -58,6 +57,7 @@ for tree in tree_init:
 
 # 나무 성장
 for year in range(K):
+    print(year+1)
     spring_summer()
     fall_winter()
     # winter()
