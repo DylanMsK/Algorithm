@@ -2,5 +2,5 @@
     "files.exclude": {
         "**/.git": false
     },
-    "python.pythonPath": "C:\\Users\\multicampus\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe"
+    "python.pythonPath": "/usr/local/bin/python3"
 }

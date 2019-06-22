@@ -10,3 +10,5 @@ for _ in range(T):
         for j in range(M-N, 0, -1):
             cnt += j
     print(cnt)
+
+    
