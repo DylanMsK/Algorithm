@@ -3,12 +3,12 @@
 T = int(input())
 for _ in range(T):
     N, M = map(int, input().split())
-
-    cnt = 1
-    for i in range(N):
-        # temp = 0
-        for j in range(M-N, 0, -1):
-            cnt += j
-    print(cnt)
-
     
+    k = (M-N)+1
+    tot = 0
+    while k > 0:
+        for i in range(k, 0, -1):
+            tot += i
+        k -= 1
+
+    print(tot)
