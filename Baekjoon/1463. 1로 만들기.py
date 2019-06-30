@@ -1,26 +1,24 @@
 # url = 'https://www.acmicpc.net/problem/1463'
 
+from heapq import heappop, heappush
 
 x = int(input())
 
 cnt = 0
+q = [(0, x)]
+while q:
+    cnt, num = heappop(q)
+    
+    if num == 1:
+        break
+    if num < 1:
+        continue
 
-
-while x != 1:
     cnt += 1
-    if x & (x-1) == 0:
-        x = x // 2
-    if x % 3 == 0:
-        x = x // 3
-        print(f'횟수: {cnt}, x: {x}')
-    elif (x+1) % 3 == 0:
-        x -= 1
-        print(f'횟수: {cnt}, x: {x}')
-    elif ((x+2) % 3) == 0 & ((x+2) % 2 == 0):
-        x -= 1
-        print(f'횟수: {cnt}, x: {x}')
-    else:
-        x = x / 2
-        print(f'횟수: {cnt}, x: {x}')
+    if num % 3 == 0:
+        heappush(q, (cnt, num//3))
+    if num % 2 == 0:
+        heappush(q, (cnt, num//2))
+    heappush(q, (cnt, num-1))
 
 print(cnt)
