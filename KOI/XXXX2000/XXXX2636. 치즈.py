@@ -1,41 +1,62 @@
 # url = 'https://www.acmicpc.net/problem/2636'
 
-def DFS(x, y):
-    if not 0 <= x < row+2 or not 0 <= y < col+2 or arr[y][x] == 2:
-        return
-    if arr[y][x] == 1:
-        arr[y][x] = -1
-        return
-    if arr[y][x] == 0:
-        arr[y][x] = 2
-        DFS(x, y+1)
-        DFS(x+1, y)
-        DFS(x-1, y)
-        DFS(x, y-1)
+N, M = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
 
+q = []
 
-col, row = map(int, input().split())
-arr = [[0] + list(map(int, input().split())) + [0] for i in range(col)]
-arr.insert(0, [0] * (row+2))
-arr.append([0] * (row+2))
+def init():
+    global q
+    temp = []
+    for y in range(N):
+        for x in range(M):
+            if arr[y][x] == 1:
+                temp.append((0, y, x))
+                break
+    
+    for y in range(N-1, -1, -1):
+        for x in range(M-1, -1, -1):
+            if arr[y][x] == 1:
+                temp.append((0, y, x))
+                break
+    
+    for x in range(M):
+        for y in range(N):
+            if arr[y][x] == 1:
+                temp.append((0, y, x))
+                break
 
-result = []
-while 1:
-    x, y = 0, 0
-    cnt = 0
-    DFS(x, y)
+    for x in range(M-1, -1, -1):
+        for y in range(N-1, -1, -1):
+            if arr[y][x] == 1:
+                temp.append((0, y, x))
+                break
+    q.append(list(set(temp)))
 
-    for y in range(col+2):
-        for x in range(row+2):
-            if arr[y][x] == -1:
-                cnt += 1
-                arr[y][x] = 0
-            elif arr[y][x] == 2:
-                arr[y][x] = 0
+init()
+cnt = 0
+while q[0]:
+    cheeses = q.pop(0)
+    cnt = len(cheeses)
+    nxt = []
+    print()
+    for y in arr:
+        print(y)
 
-    if cnt == 0:
-        break
-    result.append(cnt)
+    while cheeses:
+        t, y, x = cheeses.pop(0)
+        arr[y][x] = 0
+        for dx, dy in (0, -1), (1, 0), (0, 1), (-1, 0):
+            nt, ny, nx = t+1, y+dy, x+dx
+            if nx < 0 or nx >= M or ny < 0 or ny >= N:
+                continue
+            if arr[ny][nx] == 0:
+                continue
+            nxt.append((nt, ny, nx))
 
-print(len(result))
-print(result[-1])
+    nxt = list(set(nxt))
+    q.append(nxt)
+    
+print(cnt)
+print(t)
+    
