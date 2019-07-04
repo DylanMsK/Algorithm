@@ -1,7 +1,8 @@
 # url = 'https://www.acmicpc.net/problem/2636'
 
 N, M = map(int, input().split())
-arr = [[0]*(M+2)] + [[0] + list(map(int, input().split())) + [0] for _ in range(N)] + [[0]*(M+2)]
+arr = [[0]*(M+2)] + [[0] + list(map(int, input().split())) + [0]
+                     for _ in range(N)] + [[0]*(M+2)]
 
 cnt, time = 0, 0
 while 1:
@@ -16,12 +17,10 @@ while 1:
             if arr[ny][nx] == 0:
                 arr[ny][nx] = -1
                 q.append((ny, nx))
-            if arr[ny][nx] == 1 :
+            if arr[ny][nx] == 1:
                 arr[ny][nx] = -1
                 nxt.append((ny, nx))
 
-    nxt = list(set(nxt))
-    
     if not nxt:
         break
 
@@ -33,4 +32,3 @@ while 1:
                 arr[y][x] = 0
 
 print(f'{time}\n{cnt}')
-        
