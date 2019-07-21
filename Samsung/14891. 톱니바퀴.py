@@ -6,37 +6,40 @@ for _ in range(4):
 K = int(input())
 cmds = [list(map(int, input().split())) for _ in range(K)]
 
-def rotation(gears, n, d):
-    if n < 0 or n >= 8:
-        return
+def rotation(n, d):
+    global gears
+
+    if d == 1:
+        gears[n] = [gears[n][-1]] + gears[n][:-1]
+    else:
+        gears[n] = gears[n][1:] + [gears[n][0]]
+            
+while cmds:
+    n, d = cmds.pop(0)
+    n -= 1
 
     right, left = gears[n][2], gears[n][6]
-    if d == 1:
-        last = gears[n].pop()
-        gears = [last] + gears[n]
-    else:
-        first = gears.pop(0)
-        gears = gears[n].append(first)
-
-    if 0 < n < 7:
-        # left
-        left_right = gears[n-1][2]
-        right_left = gears[n+1][6]
-        if left_right == left:
-            return
+    rotation(n, d)
+    for idx, nxt in enumerate(range(n+1, 4)):
+        if right != gears[nxt][6]:
+            right = gears[nxt][2]
+            if idx % 2:
+                rotation(nxt, d)
+            else:
+                rotation(nxt, -d)
         else:
-            rotation(gears, n-1, -d)
-        
-        if right_left == right:
-            return
+            break
+
+    for idx, nxt in enumerate(range(n-1, -1, -1)):
+        if left != gears[nxt][2]:
+            left = gears[nxt][6]
+            if idx % 2:
+                rotation(nxt, d)
+            else:
+                rotation(nxt, -d)
         else:
-            rotation(gears, n+1, -d)
-    else:
-        return
+            break
 
-
-n, d = cmds.pop(0)
-n -= 1
-rotation(gears, n, d)
-print(gears)
+tot = [2**i for i in range(4) if gears[i][0] == '1']
+print(sum(tot))
 
