@@ -4,7 +4,7 @@ N = int(input())
 nums = list(map(int, input().split()))
 add, sub, mul, div = map(int, input().split())
 
-min_, max_ = 10**9, -10**9
+min_, max_ = 1e9, -1e9
 
 def dfs(i, res, add, sub, mul, div):
     global max_, min_
