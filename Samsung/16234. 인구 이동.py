@@ -7,12 +7,12 @@ def find_unions():
     brr = [[0]*N for _ in range(N)]
     unions = {}
     n = 1
-    for y in range(N):
-        for x in range(N):
-            if brr[y][x] == 0:
-                q = [(x, y, arr[y][x])]
+    for i in range(N):
+        for j in range(N):
+            if brr[i][j] == 0:
+                q = [(j, i, arr[i][j])]
                 idx = 0
-                brr[y][x] = 1
+                brr[i][j] = 1
                 while 1:
                     x, y, p = q[idx]
                     for dx, dy in (0, -1), (1, 0), (0, 1), (-1, 0):
@@ -32,7 +32,7 @@ def find_unions():
                     n += 1
     if unions:
         return unions
-    return
+    return None
 
 cnt = 0
 while 1:
@@ -46,9 +46,10 @@ while 1:
             for country in union:
                 x, y, _ = country
                 arr[y][x] = p
-        print(unions)
-        for i in arr:
-            print(i)
+            print(unions)
+            print()
+            for i in arr:
+                print(i)
     else:
         break
 
