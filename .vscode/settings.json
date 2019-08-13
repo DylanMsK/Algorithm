@@ -2,7 +2,7 @@
     "files.exclude": {
         "**/.git": false
     },
-    "python.pythonPath": "/Users/dylan/.pyenv/versions/3.6.7/bin/python",
+    "python.pythonPath": "C:\\Users\\multicampus\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true
 }
