@@ -6,7 +6,6 @@ if N == K:
     print(time)
 else:
     l = 500001
-    # odd, even = [0]*l, [0]*l
     visited = [0]*l
     visited[N] = 1
     q = [N]
@@ -21,8 +20,7 @@ else:
                 if 0 <= i+j < l:
                     nxt.append(i+j)
                     visited[i+j] = 1
-        if visited[K]:
-            break
         q = list(set(nxt))
-
+        if K in q:
+            break
     print(time) if K < l else print(-1)
