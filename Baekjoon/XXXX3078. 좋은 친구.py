@@ -34,12 +34,21 @@
 
 # print(cnt//2)
 
-N, K = map(int, input().split())
-s = [0]*N
-for i in range(N):
-    s[i] = len(input())
+# N, K = map(int, input().split())
+# s = [0]*N
+# for i in range(N):
+#     s[i] = len(input())
 
-cnt = 0
-for i in range(N-K):
-    cnt += s[i+1:i+K+1].count(s[i])
-print(cnt)
+# cnt = 0
+# for i in range(N-K):
+#     cnt += s[i+1:i+K+1].count(s[i])
+# print(cnt)
+
+import sys
+N, K = map(int, sys.stdin.readline().split())
+cnt = [0]*21
+students = [0]*N
+for rank in range(N):
+    students[rank] = len(sys.stdin.readline().strip())
+    cnt[students[rank]] += students[max(rank-K, 0):min(rank, N)].count(students[rank])
+print(sum(cnt))
