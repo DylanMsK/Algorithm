@@ -44,11 +44,16 @@
 #     cnt += s[i+1:i+K+1].count(s[i])
 # print(cnt)
 
-import sys
-N, K = map(int, sys.stdin.readline().split())
-cnt = [0]*21
+# import sys
+N, K = map(int, input().split())
 students = [0]*N
+dp = [0]*21
+cnt = 0
 for rank in range(N):
-    students[rank] = len(sys.stdin.readline().strip())
-    cnt[students[rank]] += students[max(rank-K, 0):min(rank, N)].count(students[rank])
-print(sum(cnt))
+    l = len(input().strip())
+    students[rank] = l
+    if rank > K:
+        dp[students[rank-K-1]] -= 1
+    cnt += dp[l]
+    dp[l] += 1
+print(cnt)
