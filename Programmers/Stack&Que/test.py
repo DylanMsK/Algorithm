@@ -1,25 +1,36 @@
-def solution(begin, target, words, answer=0):
-    if begin == target:
-        return answer
-    if not words:
-        return 0
-    print(begin, target, words)
-    l = len(begin)
-    promiss = []
-    for word in words:
-        cnt = 0
-        for i in range(l):
-            if cnt > 1:
-                break
-            if word[i] == begin[i]:
-                cnt += 1
-        if cnt == 1:
-            promiss.append(word)
-
-    print(f"answer: {answer}, promiss: {promiss}")
-    while promiss:
-        word = promiss.pop(0)
-        solution(word, target, [i for i in words if i != word], answer+1)
+def solution(tickets):
+    routes = {}
+    for ticket in tickets:
+        if ticket[0] in routes:
+            routes[ticket[0]].append(ticket)
+        else:
+            routes[ticket[0]] = [ticket]
+            
+    answer = [[city] for city in routes['ICN']]
+    tot = len(tickets)-1
+    while 1:
+        nxt = []
+        while answer:
+            route = answer.pop(0)
+            final_city = route[-1][-1]
+            for city in routes[final_city]:
+                if city not in route:
+                    nxt.append(route+[city])
+        tot -= 1
+        if tot == 0:
+            break
+        answer = nxt
     
+    if len(answer) == 1:
+        return nxt[0]
+    else:
+        answer = []
+        for route in nxt:
+            temp = ['ICN']
+            for i in route:
+                temp.append(i[1])
+            answer.append(temp)
 
-print(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]))
+        return sorted(answer)[0]
+
+solution([["ICN", "SFO"], ["ICN", "ATL"], ["SFO", "ATL"], ["ATL", "ICN"], ["ATL","SFO"]])
