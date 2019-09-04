@@ -1,36 +1,21 @@
-def solution(tickets):
-    routes = {}
-    for ticket in tickets:
-        if ticket[0] in routes:
-            routes[ticket[0]].append(ticket)
+def solution(lines):
+    logs = []
+    for line in lines:
+        _, done, time = line.split()
+        h, m, s = done.split(':')
+        end = (int(h)*60*60 + int(m)*60 + float(s))*1000
+        logs.append((end-float(time[:-1])*1000+1, end))
+    stack = [logs[0]]
+    max_ = 1
+    for log in logs[1:]:
+        if log[0] - stack[0][1] < 1000:
+            stack.append(log)
+            max_ = max(max_, len(stack))
         else:
-            routes[ticket[0]] = [ticket]
-            
-    answer = [[city] for city in routes['ICN']]
-    tot = len(tickets)-1
-    while 1:
-        nxt = []
-        while answer:
-            route = answer.pop(0)
-            final_city = route[-1][-1]
-            for city in routes[final_city]:
-                if city not in route:
-                    nxt.append(route+[city])
-        tot -= 1
-        if tot == 0:
-            break
-        answer = nxt
-    
-    if len(answer) == 1:
-        return nxt[0]
-    else:
-        answer = []
-        for route in nxt:
-            temp = ['ICN']
-            for i in route:
-                temp.append(i[1])
-            answer.append(temp)
-
-        return sorted(answer)[0]
-
-solution([["ICN", "SFO"], ["ICN", "ATL"], ["SFO", "ATL"], ["ATL", "ICN"], ["ATL","SFO"]])
+            stack.pop(0)
+            while stack:
+                if log[0] - stack[0][1] < 1000:
+                    break
+                stack.pop(0)
+            stack.append(log)
+    return max_
