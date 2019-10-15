@@ -1,20 +1,11 @@
-def solution(n, costs):
-    answer = 0
-    costs.sort(key=lambda x: x[2])
-    visited = [0] * n
-    visited[0] = 1
-    while sum(visited) != n:
-        for cost in costs:
-            s, e, c = cost
-            if visited[s] or visited[e]:
-                if visited[s] and visited[e]:
-                    continue
-                else:
-                    visited[s] = 1
-                    visited[e] = 1
-                    answer += c
-                    break
+def solution(n):
+    if n == 1 or n == 0:
+        return 1
+    else:
+        return solution(n-1) + solution(n-2)
 
-    return answer
-
-print(solution(4, [[0,1,1],[0,2,2],[1,2,5],[1,3,1],[2,3,8]]))
+print(solution(3))
+print(solution(4))
+print(solution(5))
+print(solution(6))
+print(solution(7))
