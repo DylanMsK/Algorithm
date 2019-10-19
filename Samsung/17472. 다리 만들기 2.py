@@ -40,6 +40,7 @@ def find_min_distance(irland):
         for x in range(M):
             if arr[y][x] == irland:
                 q.append((x, y))
+                dist[y][x] = 0
     
     while q:
         x, y = q.popleft()
@@ -47,7 +48,7 @@ def find_min_distance(irland):
             nx, ny = x + dx[i], y + dy[i]
             if nx < 0 or nx >= M or ny < 0 or ny >= N:
                 continue
-            if arr[ny][nx]:
+            if not dist[ny][nx]:
                 continue
             else:
                 distance = 1
@@ -56,17 +57,14 @@ def find_min_distance(irland):
                     ny += dy[i]
                     if nx < 0 or nx >= M or ny < 0 or ny >= N:
                         break
+                    if not dist[ny][nx]:
+                        break
                     if arr[ny][nx] and arr[ny][nx] != irland:
                         if distance > 1:
                             min_distance[arr[ny][nx]][irland] = min(min_distance[arr[ny][nx]][irland], distance)
                             min_distance[irland][arr[ny][nx]] = min(min_distance[irland][arr[ny][nx]], distance)
                         break
                     distance += 1
-
-
-
-
-
     return
 
 
@@ -81,23 +79,13 @@ for i in range(1, irland):
                 costs.append((i, j, min_distance[i][j]))
 costs.sort(key=lambda x: x[2])
 
-for i in arr:
-    print(i)
-
-for i in min_distance:
-    print(i)
-
-print(costs)
 price = 0
 connected = [0]*irland
 connected[0] = 1
 connected[1] = 1
-print(irland)
-print(connected)
 while sum(connected) != irland:
     for cost in costs:
         s, e, p = cost
-        print(cost, connected)
         if connected[s] or connected[e]:
             if connected[s] and connected[e]:
                 continue
