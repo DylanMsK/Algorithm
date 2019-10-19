@@ -1,50 +1,55 @@
 # url = 'https://www.acmicpc.net/problem/17143'
+from collections import deque
 
 R, C, M = map(int, input().split())
-mat = [[0]*C for r in range(R)]
-sharks = []
-for _ in range(M):
-    shark = list(map(int, input().split()))
-    mat[y-1][x-1] = shark
+sharks = [list(map(int, input().split())) for _ in range(M)]        # y, x, 속력, 방향, 크기
+dr, dc = (0, -1, 1, 0, 0), (0, 0, 0, 1, -1)
 
-answer = 0
-for col in range(1, M):
-    # fishing shark
-    for i in range(R):
-        if mat[col][i]:
-            shark = mat[col][i]
-            sharks.remove(shark)
-            answer += shark[-1]
-            mat[col][i] = 0
-            break
-    
-    # moving shark
+def move(shark):
+    r, c, s, d, z = shark
+    while s > 0:
+        nr, nc = r + dr[d], c + dc[d]
+        s -= 1
+        if nr > R:
+            d = 1
+            nr -= 2
+        elif nr < 1:
+            d = 2
+            nr += 2
+        elif nc > C:
+            d = 4
+            nc -= 2
+        elif nc < 1:
+            d = 3
+            nc += 2
+        r, c = nr, nc
+    return r, c, shark[2], d, z
+
+
+fisher, total = 0, 0
+while fisher < C and sharks:
+    fisher += 1
+    sharks.sort(key=lambda x: (abs(x[1]-fisher), x[0]))
+    if sharks[0][1] == fisher:
+        *_, z = sharks.pop(0)
+        total += z
+    sharks = deque(sharks)
+    arr = [[[]]*(C+1) for _ in range(R+1)]
     while sharks:
-        r, c, s, d, z = sharks.pop(0)
-        nr, nc, ns = r, c, s
-        while ns > 0:
-            ns -= 1
-            if d == 1:
-                if nr == 1:
-                    nr += 1
-                    d = 2
-                else:
-                    nr -= 1
-            elif d == 2:
-                if nr == R:
-                    nr -= 1
-                    d = 1
-                else:
-                    nr += 1
-            elif d == 3:
-                if nc == C:
-                    nc -= 1
-                    d = 4
-                else:
-                    nc += 1
-            else:
-                if nc == 1:
-                    nc += 1
-                    d = 3
-                else:
-                    nc -= 1
+        shark = sharks.popleft()
+        r, c, s, d, z = move(shark)
+        if arr[r][c]:
+            if z > arr[r][c][-1]:
+                arr[r][c] = [s, d, z]
+        else:
+            arr[r][c] = [s, d, z]
+
+    sharks = []
+    for y in range(1, R+1):
+        for x in range(1, C+1):
+            if arr[y][x]:
+                s, d, z = arr[y][x]
+                sharks.append([y, x, s, d, z])
+    
+
+print(total)
