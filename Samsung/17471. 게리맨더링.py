@@ -1,39 +1,43 @@
 # url = 'https://www.acmicpc.net/problem/17471'
 from itertools import combinations
 
+
 N = int(input())
-nums = list(map(int, input().split()))
-connected = {i: list(map(int, input().split()))[1:] for i in range(N)}
+population = list(map(int, input().split()))
+connection = {i: [j-1 for j in list(map(int, input().split()))[1:]] for i in range(N)}
 
 def is_connected(comb):
-    q = []
-    for c in comb:
-        q += connected[c]
-    q = [i-1 for i in set(q)]
-    # print(set(q))
-    # print(set(comb))
-    # print(set(q) & set(comb))
-    if set(q) & set(comb) == set(comb):
-        print(comb)
+    check = [1 if i in comb else 0 for i in range(N)]
+    visited = [0]*N
+    visited[list(comb)[0]] = 1
+    q = connection[list(comb)[0]]
+    while q:
+        nxt = []
+        for i in q:
+            if check[i] and not visited[i]:
+                nxt += connection[i]
+                visited[i] = 1
+        q = set(nxt)
+        
+    for i in range(N):
+        if check[i] and not visited[i]:
+            return False
+    else:
         return True
-    return False
 
 def diff(a, b):
-    sum_a = sum([nums[i] for i in a])
-    sum_b = sum([nums[i] for i in b])
+    sum_a = sum([population[i] for i in a])
+    sum_b = sum([population[i] for i in b])
     return abs(sum_a - sum_b)
+
 
 min_ = 1e10
 for k in range(1, N//2+1):
     for comb in combinations(list(range(N)), k):
-        cities = set(range(N))
         a = set(comb)
-        b = cities - a
+        b = set(range(N)) - a
         if is_connected(a) and is_connected(b):
-            # print(a, b)
             min_ = min(min_, diff(a, b))
-
-# print(is_connected((1, 4, 5)))
 
 if min_ == 1e10:
     print(-1)
